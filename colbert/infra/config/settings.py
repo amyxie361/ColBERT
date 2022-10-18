@@ -120,7 +120,8 @@ class TrainingSettings:
 
     lr: float = DefaultVal(3e-06)
 
-    maxsteps: int = DefaultVal(500_000)
+    #maxsteps: int = DefaultVal(500_000)
+    maxsteps: int = DefaultVal(100)
 
     save_every: int = DefaultVal(None)
 

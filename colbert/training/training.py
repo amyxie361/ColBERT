@@ -118,14 +118,14 @@ def train(config: ColBERTConfig, triples, queries=None, collection=None):
                     loss = nn.CrossEntropyLoss()(scores, labels[:scores.size(0)])
                 
                 if config.use_ib_negatives:
-                    if config.rank < 1:
-                        print('\t\t\t\t', loss.item(), ib_loss.item())
+                    if config.rank < 1 and batch_idx % 10 == 0:
+                        print('\t\t\t\t', "loss\t", loss.item(), "\tib_loss\t", ib_loss.item())
 
                     loss += ib_loss
 
                 loss = loss / config.accumsteps
 
-            if config.rank < 1:
+            if config.rank < 1 and batch_idx % 10 == 0:
                 print_progress(scores)
 
             amp.backward(loss)
@@ -137,8 +137,8 @@ def train(config: ColBERTConfig, triples, queries=None, collection=None):
 
         amp.step(colbert, optimizer, scheduler)
 
-        if config.rank < 1:
-            print_message(batch_idx, train_loss)
+        if config.rank < 1 and batch_idx % 10 == 0:
+            print_message("batch_idx\t", batch_idx, "\ttrain loss\t", train_loss)
             manage_checkpoints(config, colbert, optimizer, batch_idx+1, savepath=None)
 
     if config.rank < 1:

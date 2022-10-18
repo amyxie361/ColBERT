@@ -1,6 +1,7 @@
 from colbert.infra.run import Run
 import os
 import ujson
+import tqdm
 
 from colbert.utils.utils import print_message
 from colbert.infra.provenance import Provenance
@@ -25,9 +26,11 @@ class Examples:
         examples = []
 
         with open(path) as f:
-            for line in f:
-                example = ujson.loads(line)[:nway]
+            for line in tqdm.tqdm(f):
+                # example = ujson.loads(line)[:nway]
+                example = [int(x) for x in line.split("\t")]
                 examples.append(example)
+        print("Finish load examples")
 
         return examples
 

@@ -44,10 +44,10 @@ class LazyBatcher():
         all_queries, all_passages, all_scores = [], [], []
 
         for position in range(offset, endpos):
-            query, *pids = self.triples[position]
+            qid, *pids = self.triples[position]
             pids = pids[:self.nway]
 
-            query = self.queries[query]
+            query = self.queries[qid]
 
             try:
                 pids, scores = zipstar(pids)
